@@ -28,17 +28,26 @@ type sessionGetter interface {
 type localSessionGetter struct{}
 
 // port could be the empty string
-func (l *localSessionGetter) get(port, username, password string) (*mgo.Session, error) {
+func (l *localSessionGetter) get(port, username, password string, ssl bool) (*mgo.Session, error) {
 	addr := "localhost"
 	if port != "" {
 		addr += ":" + port
+	}
+	var dialServerFunc func(addr *ServerAddr) (net.Conn, error)
+	if ssl {
+		dialServerFunc := func(addr *mgo.ServerAddr) (net.Conn, error) {
+			return tls.Dial("tcp", addr.String(), &tls.Config{})
+		}
+	} else {
+		dialServerFunc := nil
 	}
 	return mgo.DialWithInfo(&mgo.DialInfo{
 		Direct:   true,
 		Addrs:    []string{addr},
 		Timeout:  5 * time.Minute,
 		Username: username,
-		Password: password})
+		Password: password
+		DialServer: dialServerFunc})
 }
 
 // LocalReplica is a replica where all methods that take a ReplicaID must be
@@ -47,18 +56,20 @@ type LocalReplica struct {
 	port                string
 	username            string
 	password            string
+	ssl                 bool
 	sessionGetter       sessionGetter
 	maxBackgroundCopies int
 }
 
 // NewLocalReplica constructs a LocalReplica
-func NewLocalReplica(maxBackgroundCopies int, port, username, password string) (*LocalReplica, error) {
+func NewLocalReplica(maxBackgroundCopies int, port, username, password string, ssl bool) (*LocalReplica, error) {
 	return &LocalReplica{
 		sessionGetter:       &localSessionGetter{},
 		maxBackgroundCopies: maxBackgroundCopies,
 		port:                port,
 		username:            username,
 		password:            password,
+		ssl:                 ssl,
 	}, nil
 
 }
@@ -170,7 +181,7 @@ func nestedBsonMapGet(m bson.M, arg string, moreArgs ...string) (interface{}, er
 // TODO(agf): Have a way to pass in tags
 func (r *LocalReplica) CreateSnapshot(replicaID, snapshotID string) (*strata.Snapshot, error) {
 	strata.Log("Getting session for CreateSnapshot()")
-	session, err := r.sessionGetter.get(r.port, r.username, r.password)
+	session, err := r.sessionGetter.get(r.port, r.username, r.password, r.ssl)
 	if err != nil {
 		return nil, err
 	}

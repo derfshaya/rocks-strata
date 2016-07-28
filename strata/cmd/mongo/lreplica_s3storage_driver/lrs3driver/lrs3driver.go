@@ -1,4 +1,4 @@
-//  Copyright (c) 2015, Facebook, Inc.  All rights reserved.
+	//  Copyright (c) 2015, Facebook, Inc.  All rights reserved.
 //  This source code is licensed under the BSD-style license found in the
 //  LICENSE file in the root directory of this source tree. An additional grant
 //  of patent rights can be found in the PATENTS file in the same directory.
@@ -29,6 +29,7 @@ type AWSOptions struct {
 type ReplicaOptions struct {
 	MaxBackgroundCopies int    `long:"max-background-copies" default:"16" description:"Backup and restore actions will use up to this many goroutines to copy files"`
 	Port                int    `long:"port" default:"27017" description:"Backup should look for a mongod instance that is listening on this port"`
+	SSL                 bool   `long:"ssl" default:"false" description:"Backup and restore should use SSL for authentication with mongod instance"`
 	Username            string `long:"username" description:"If auth is configured, specify the username with admin privileges here"`
 	Password            string `long:"password" description:"Password for the specified user."`
 }
@@ -73,6 +74,7 @@ func (factory DriverFactory) Driver() (*strata.Driver, error) {
 		strconv.Itoa(options.Replica.Port),
 		options.Replica.Username,
 		options.Replica.Password,
+		options.Replica.SSL,
 	)
 	if err != nil {
 		return nil, err
