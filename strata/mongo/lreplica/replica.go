@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 	"net"
-	"tls"
+	"crypto/tls"
 
 	"github.com/facebookgo/rocks-strata/strata"
 
