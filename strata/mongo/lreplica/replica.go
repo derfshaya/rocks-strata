@@ -37,11 +37,11 @@ func (l *localSessionGetter) get(port, username, password string, ssl bool) (*mg
 	}
 	var dialServerFunc func(addr *mgo.ServerAddr) (net.Conn, error)
 	if ssl {
-		dialServerFunc := func(addr *mgo.ServerAddr) (net.Conn, error) {
+		dialServerFunc = func(addr *mgo.ServerAddr) (net.Conn, error) {
 			return tls.Dial("tcp", addr.String(), &tls.Config{})
 		}
 	} else {
-		dialServerFunc := func(addr *mgo.ServerAddr) (net.Conn, error)(nil)
+		dialServerFunc = nil
 	}
 	return mgo.DialWithInfo(&mgo.DialInfo{
 		Direct:   true,
