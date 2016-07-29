@@ -410,18 +410,29 @@ func (c *ShowLastBackupTimeCommand) Execute(args []string) error {
 // RunCLI parses command-line arguments and runs the corresponding command
 func RunCLI(factory DriverFactory) {
 	Log("Starting strata driver")
-
+	Log("debug 1")
 	parser := flags.NewParser(factory.GetOptions(), flags.Default)
+	Log("debug 2")
 	parser.AddCommand("backup", "trigger a backup", "trigger a backup on the replica", &BackupCommand{driverFactory: factory})
+	Log("debug 3")
 	parser.AddCommand("restore", "trigger a restore", "trigger a restore using the specified replica and backup id", &RestoreCommand{driverFactory: factory})
+	Log("debug 4")
 	parser.AddCommand("delete", "delete backup data", "remove backup metadata from storage", &DeleteCommand{driverFactory: factory})
+	Log("debug 5")
 	parser.AddCommand("gc", "garbage collect", "remove unneeded data files for the given replica id from storage", &GCCommand{driverFactory: factory})
+	Log("debug 6")
 	showCmd, _ := parser.AddCommand("show", "show backup data", "use to display the backup metadata", &ShowCommand{})
+	Log("debug 7")
 	showCmd.AddCommand("backups", "show backups", "show backups for the given replica id", &ShowBackupsCommand{driverFactory: factory})
+	Log("debug 8")
 	showCmd.AddCommand("last-backup-time", "seconds since epoch", "show the start time of the most recent successful backup for the given replica id, in seconds since epoch", &ShowLastBackupTimeCommand{driverFactory: factory})
+	Log("debug 9")
 	showCmd.AddCommand("replica-ids", "show replica ids", "show replica ids known to the metadata", &ShowReplicaIDsCommand{driverFactory: factory})
+	Log("debug 10")
 
 	if _, err := parser.Parse(); err != nil {
+		Log(err)
+		Log("debug exit");
 		os.Exit(1)
 	}
 
