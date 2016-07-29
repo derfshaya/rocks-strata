@@ -46,7 +46,7 @@ func (l *localSessionGetter) get(port, username, password string, ssl bool) (*mg
 		Addrs:    []string{addr},
 		Timeout:  5 * time.Minute,
 		Username: username,
-		Password: password
+		Password: password,
 		DialServer: dialServerFunc})
 }
 
