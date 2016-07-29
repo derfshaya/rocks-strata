@@ -29,7 +29,7 @@ type AWSOptions struct {
 type ReplicaOptions struct {
 	MaxBackgroundCopies int    `long:"max-background-copies" default:"16" description:"Backup and restore actions will use up to this many goroutines to copy files"`
 	Port                int    `long:"port" default:"27017" description:"Backup should look for a mongod instance that is listening on this port"`
-	SSL                 bool   `long:"ssl" default:"false" description:"Backup and restore should use SSL for authentication with mongod instance"`
+	SSL                 bool   `long:"ssl" description:"Backup and restore should use SSL for authentication with mongod instance"`
 	Username            string `long:"username" description:"If auth is configured, specify the username with admin privileges here"`
 	Password            string `long:"password" description:"Password for the specified user."`
 }
