@@ -20,7 +20,7 @@ type mockLocalSessionGetter struct {
 	mongo *mgotest.Server
 }
 
-func (mlsg *mockLocalSessionGetter) get(string, string, string) (*mgo.Session, error) {
+func (mlsg *mockLocalSessionGetter) get(string, string, string, bool) (*mgo.Session, error) {
 	return mlsg.mongo.Session(), nil
 }
 
