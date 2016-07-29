@@ -8,8 +8,8 @@ package main
 import (
 	"runtime"
 
-	"github.com/facebookgo/rocks-strata/strata"
-	"github.com/facebookgo/rocks-strata/strata/cmd/mongo/lreplica_s3storage_driver/lrs3driver"
+	"github.com/derfshaya/rocks-strata/strata"
+	"github.com/derfshaya/rocks-strata/strata/cmd/mongo/lreplica_s3storage_driver/lrs3driver"
 )
 
 func main() {
