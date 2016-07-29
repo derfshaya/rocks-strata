@@ -14,6 +14,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"net"
+	"tls"
 
 	"github.com/facebookgo/rocks-strata/strata"
 
@@ -22,7 +24,7 @@ import (
 )
 
 type sessionGetter interface {
-	get(port, username, password string) (*mgo.Session, error)
+	get(port, username, password string, ssl bool) (*mgo.Session, error)
 }
 
 type localSessionGetter struct{}
