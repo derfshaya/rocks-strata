@@ -431,7 +431,7 @@ func RunCLI(factory DriverFactory) {
 	Log("debug 10")
 
 	if _, err := parser.Parse(); err != nil {
-		Log(err)
+		Log(err.String())
 		Log("debug exit");
 		os.Exit(1)
 	}
