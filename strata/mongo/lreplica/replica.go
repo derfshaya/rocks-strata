@@ -17,7 +17,7 @@ import (
 	"net"
 	"crypto/tls"
 
-	"github.com/facebookgo/rocks-strata/strata"
+	"github.com/derfshaya/rocks-strata/strata"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
